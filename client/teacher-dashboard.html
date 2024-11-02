@@ -8,49 +8,74 @@
 </head>
 <body>
 
-    <div class="sidebar">
-        <div class="logo">Logoipsum</div>
-        <nav>
-            <ul>
-                <li><a href="teacher-dashboard.html">Courses</a></li>
-            </ul>
-        </nav>
+    <!-- Top header with logo, user info, and logout button -->
+    <div class="top-header">
+        <div class="logo-section">
+            <img src="/assets/sam_logo.jpeg" alt="Logo" class="header-logo"> <!-- Replace with your logo image -->
+            <span class="header-logo-name">EduQuest</span>
+        </div>
+        <div class="user-info">
+            <span class="user-name">GDVH</span>
+            <div class="profile-icon">G</div> <!-- Replace with actual profile photo if available -->
+            <button class="logout-btn" onclick="confirmLogout()">Logout</button>
+        </div>
     </div>
 
-    <div class="content">
-        <header>
-            <h1>Courses</h1>
-            <button class="new-course-btn">New Course</button>
-        </header>
-
-        <div class="filter-bar">
-            <input type="text" id="courseFilter" placeholder="Filter courses..." onkeyup="filterCourses()">
+    <!-- Sidebar and main content container -->
+    <div class="main-container">
+        <div class="sidebar">
+            <nav>
+                <ul>
+                    <li><a href="teacher-dashboard.html">Courses</a></li>
+                </ul>
+            </nav>
         </div>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Status</th>
-                    <th> </th>
-                </tr>
-            </thead>
-            <tbody id="courseList">
-                <tr>
-                    <td>Cinematic Techniques</td>
-                    <td><span class="status published">Published</span></td>
-                    <td><button class="options">...</button></td>
-                </tr>
-                <tr>
-                    <td>Introduction to Filming</td>
-                    <td><span class="status published">Published</span></td>
-                    <td><button class="options">...</button></td>
-                </tr>
-                <!-- Add more courses as needed -->
-            </tbody>
-        </table>
+        <div class="content">
+            <header>
+                <h1>Courses</h1>
+                <button class="new-course-btn">New Course</button>
+            </header>
+
+            <div class="filter-bar">
+                <input type="text" id="courseFilter" placeholder="Filter courses..." onkeyup="filterCourses()">
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Status</th>
+                        <th> </th>
+                    </tr>
+                </thead>
+                <tbody id="courseList">
+                    <tr>
+                        <td>Cinematic Techniques</td>
+                        <td><span class="status published">Published</span></td>
+                        <td>
+                            <div class="options-container">
+                                <button class="options">...</button>
+                                <div class="edit-option" onclick="openEditPage('Cinematic Techniques')">Edit</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Introduction to Filming</td>
+                        <td><span class="status published">Published</span></td>
+                        <td>
+                            <div class="options-container">
+                                <button class="options">...</button>
+                                <div class="edit-option" onclick="openEditPage('Introduction to Filming')">Edit</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- Add more courses as needed -->
+                </tbody>
+            </table>
+        </div>
     </div>
 
-    <script src="script.js"></script>
+    <script src="tscript.js"></script>
 </body>
 </html>
