@@ -1,40 +1,4 @@
-/* body, html {
-    margin: 0;
-    padding: 0;
-    font-family: 'Jost', sans-serif;
-    background-color: #f0f2f5;
-}
-
-.welcome-container {
-    text-align: center;
-    margin-top: 50px;
-}
-
-.welcome-container h1 {
-    color: #333;
-}
-
-.portal-links {
-    margin-top: 20px;
-}
-
-.portal-button {
-    text-decoration: none;
-    padding: 10px 20px;
-    margin: 10px;
-    background-color: #4CAF50;
-    color: white;
-    border-radius: 5px;
-}
-
-.portal-button:hover {
-    background-color: #45a049;
-}
-
-
- */
-
- body {
+body {
     font-family: Arial, sans-serif;
     display: flex;
     justify-content: center;
