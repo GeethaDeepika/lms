@@ -10,9 +10,19 @@
 <body>
     <div class="form-container">
         <h2 id="signup-title">Sign Up</h2>
+        <input type="text" id="username" placeholder="Username" required>
         <input type="email" id="email" placeholder="Email" required>
         <input type="password" id="password" placeholder="Password" required>
         <button onclick="handleSignup()">Sign Up</button>
+        <p>Have an account? <a id="login-link" href="#">Log In</a></p>
     </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const role = urlParams.get('role');
+
+        const loginLink = document.getElementById('login-link');
+        loginLink.href = `login.html?role=${role || 'student'}`;
+    </script>
 </body>
 </html>
