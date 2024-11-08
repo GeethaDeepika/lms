@@ -42,8 +42,24 @@
     </div>
 
     <div id="contact" class="section contact-section">
-        <h2>Contact Us</h2>
-        <p>This is the Contact Us section where visitors can find your contact information.</p>
-    </div>
+        <form action="https://api.web3forms.com/submit" method="POST" class="contact-left">
+            <div class="contact-left-title">
+                <h2>Contact Us</h2>
+                <hr>
+            </div>
+            <input type="hidden" name="access_key" value="d56d366b-b160-4806-9bfd-5bc740d786c9">
+            <input type="text" name="name" placeholder="Name" class="contact-inputs" required>
+            <input type="email" name="email" placeholder="Email" class="contact-inputs" required>
+            <textarea name="message" placeholder="Message" class="contact-inputs" required></textarea>
+            <button type="submit">submit</button>
+        </form>
+
+        <div class="contact-right">
+            <img src="./assets/contact_image.jpg" alt="">
+
+        </div>
+
+      </div>
+      
 </body>
 </html>

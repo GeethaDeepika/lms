@@ -42,7 +42,7 @@ header {
 .nav-links {
     display: flex;
     gap: 20px;
-    transform: translateX(-10%);
+    transform: translateX(-80%);
 }
 
 .nav-link {
@@ -141,11 +141,87 @@ header {
 }
 
 .contact-section {
-    background-color: #dee2e6;
+    background-color: #e9ecef;
 }
 
 /* Smooth scrolling for the whole page */
 html {
     scroll-behavior: smooth;
     scroll-snap-type: y mandatory;
+}
+
+/* Contact Section */
+.contact-section {
+    background-color: #e9ecef;
+    display: flex;
+    flex-direction: row;
+    justify-content: center; 
+    align-items: center; 
+    padding: 50px;
+    gap: 100px; /* Space between form and image */
+}
+
+.contact-left {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    max-width: 500px;
+    gap: 20px;
+}
+
+.contact-left-title h2 {
+    font-weight: 600;
+    font-size: 2.5em;
+    color: black;
+}
+
+.contact-left-title hr {
+    border: none;
+    height: 5px;
+    background-color: black;
+    border-radius: 10px;
+    margin-bottom: 40px;
+}
+
+.contact-inputs {
+    width: 400px;
+    height: 50px;
+    padding-left: 25px;
+    font-weight: 500;
+    color: #666;
+    font-size: 1em;
+    border-radius: 50px;
+    border: none;
+    outline: none;
+}
+
+.contact-left textarea {
+    height: 140px;
+    padding-top: 15px;
+    border-radius: 20px;
+}
+
+.contact-inputs:focus {
+    border: 2px solid #ff994f;
+}
+
+.contact-left button {
+    padding: 10px 20px;
+    font-size: 1em;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    cursor: pointer;
+    border-radius: 50px;
+    transition: background-color 0.3s;
+}
+
+.contact-left button:hover {
+    background-color: #0056b3;
+}
+
+.contact-right img {
+    width: 500px;
+    height: 380px;
+    border-radius: 4px;
 }
