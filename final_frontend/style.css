@@ -7,9 +7,9 @@
 
 /* Header styling */
 header {
-    background-color: #2a2d34;
-    color: #fff;
-    padding: 10px 20px;
+    background-color: #e9ecef;
+    color: black;
+    padding: 15px 20px;
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -28,54 +28,60 @@ header {
 }
 
 .logo {
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     margin-right: 10px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
+    transform: scale(1.2);
 }
 
 .website-name {
     font-size: 1.5em;
-    color: #fff;
+    color: black;
 }
 
 /* Navigation links positioned slightly towards center */
 .nav-links {
     display: flex;
     gap: 20px;
-    transform: translateX(-80%);
+    transform: translateX(-40%);
 }
 
 .nav-link {
-    color: #fff;
+    color: black;
     text-decoration: none;
-    font-size: 1em;
-    padding: 5px;
-    transition: color 0.3s, text-decoration 0.3s;
+    font-size: 1.3em;
+    padding: 9px;
+    transition: color 0.3s;
+    text-underline-offset: 3px
 }
 
 /* Underline on hover */
 .nav-link:hover {
     text-decoration: underline;
+    text-decoration-color: black;
 }
 
 /* Portal links positioned on the far right */
 .portal-links {
     display: flex;
-    gap: 15px;
+    gap: 30px;
 }
 
 .portal-button {
-    color: #fff;
+    color: black;
     text-decoration: none;
     font-size: 1em;
     padding: 5px 10px;
-    background-color: #4a4e69;
+    background-color: #7cc0df;
     border-radius: 4px;
     transition: background-color 0.3s;
 }
 
 .portal-button:hover {
-    background-color: #6b728e;
+    background-color: #649cb6;
 }
 
 /* Section styling for full-screen effect */
@@ -92,7 +98,7 @@ header {
 
 /* Home section background image */
 .home-section {
-    background-image: url('./assets/home_back.jpg'); /* Replace with your image path */
+    background-image: url('./assets/home_back.jpg');
     background-size: cover;
     background-position: center;
     position: relative;
@@ -234,7 +240,7 @@ html {
     justify-content: center;
     align-items: center;
     padding: 50px;
-    background-color: #f8f9fa;
+    background-color: #e9ecef;
     text-align: center;
 }
 
@@ -309,4 +315,3 @@ html {
 .author-icons .icon:hover {
     opacity: 0.7;
 }
-
