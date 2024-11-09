@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up</title>
-    <link rel="stylesheet" href="style.css">
+    <link id="role-stylesheet" rel="stylesheet" href="">
     <script defer src="script.js"></script>
 </head>
 <body>
@@ -20,6 +20,16 @@
     <script>
         const urlParams = new URLSearchParams(window.location.search);
         const role = urlParams.get('role');
+
+        // Select the appropriate stylesheet based on the role
+        const stylesheet = document.getElementById('role-stylesheet');
+        if (role === 'student') {
+            stylesheet.href = 'student-style.css';
+        } else if (role === 'instructor') {
+            stylesheet.href = 'instructor-style.css';
+        } else {
+            stylesheet.href = 'default-style.css'; // Optional: a default style if no role is specified
+        }
 
         const loginLink = document.getElementById('login-link');
         loginLink.href = `login.html?role=${role || 'student'}`;
