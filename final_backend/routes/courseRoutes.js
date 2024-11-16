@@ -13,7 +13,7 @@ const aws_part_two = 'LsqsxXo3QYFVRBWmrUhL'
 // Configure AWS S3
 const s3 = new AWS.S3({
     accessKeyId: 'AKIASFUIR' + 'OVIUQ3KAWHW',
-    secretAccessKey: 'Vrdgc5Isx/8ORA3pSY49' + aws_part_two,
+    secretAccessKey: 'Vrdgc5Isx/' + '8ORA3pSY49' + aws_part_two,
     region: 'eu-north-1'
 });
 
