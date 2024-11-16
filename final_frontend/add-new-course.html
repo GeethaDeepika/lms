@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Course</title>
+    <link rel="stylesheet" href="instructor-page-style.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo-container">
+                <img src="./assets/logo.jpeg" alt="Website Logo" class="logo">
+                <h2 class="website-name">CourseHub</h2>
+            </div>
+            <div class="user-info">
+                <button class="logout-btn" onclick="confirmLogout()">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="sidebar">
+        <nav>
+            <ul>
+                <li><a href="instructor.html">Courses</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="main-content">
+        <h2>Add New Course</h2>
+        <form id="add-course-form" class="form-container" >
+            <!-- Left Section -->
+            <div class="left-section">
+                <label for="course-title">Course Title:</label>
+                <input type="text" id="course-title" name="title" placeholder="Enter course title" >
+
+                <label for="course-description">Course Description:</label>
+                <textarea id="course-description" name="description" rows="4" placeholder="Enter course description" ></textarea>
+
+                <label for="course-photo">Course Photo:</label>
+                <div class="photo-input">
+                    <label for="course-photo" class="photo-placeholder" id="photo-placeholder">
+                        <span id="photo-placeholder-text">Click to upload photo</span>
+                        <img id="photo-preview" class="hidden">
+                    </label>
+                    <input type="file" id="course-photo" name="photo" accept="image/*" onchange="handlePhotoUpload(event)" hidden>
+                    <button type="button" class="delete-btn hidden" id="delete-photo-btn" onclick="deletePhoto()">Delete</button>
+                </div>
+
+                <label for="course-category">Course Category:</label>
+                <input type="text" id="course-category" name="category" placeholder="Enter course category" >
+            </div>
+
+            <!-- Right Section -->
+            <div class="right-section">
+                <label>Chapters:</label>
+                <div id="chapter-list"></div>
+                <button type="button" class="add-chapter-btn" onclick="addChapter()">Add Chapter</button>
+
+                <label for="course-documents">Additional Documents:</label>
+                <div id="additional-doc-list"></div>
+                <button type="button" class="add-document-btn" onclick="addDocument()">Add Document</button>
+            </div>
+
+            <!-- Save Button -->
+            <div class="save-container">
+                <button type="submit" class="submit-btn">Save Course</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="instructor-page-script.js"></script>
+</body>
+</html>
