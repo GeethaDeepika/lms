@@ -31,6 +31,9 @@ const handleLogin = async () => {
     });
 
     const data = await res.json();
+
+    localStorage.setItem('user_data', JSON.stringify(data.user));
+
     if (data.token) {
         alert("Login successful!");
         window.location.href = `${role}.html`; // Redirect to student.html or instructor.html based on role

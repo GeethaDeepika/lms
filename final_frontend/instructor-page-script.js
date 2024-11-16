@@ -77,20 +77,21 @@ function removeItem(itemId) {
 document.getElementById('add-course-form').addEventListener('submit', async (event) => {
     event.preventDefault();
 
+    const userData = JSON.parse(localStorage.getItem('user_data'))
+
     const formData = new FormData(event.target);
+    formData.append('instructorId', userData._id);
 
-    
-
-    alert(JSON.stringify(formData))
-
-    
-        const response = await fetch('http://localhost:5001/add-course', {
-            method: 'POST',  
-            body: formData,
-        });
+    const response = await fetch('http://localhost:5001/add-course', {
+        method: 'POST',
+        body: formData
+    });
 
         if (response.ok) {
             alert('Course added successfully!');
         }
+
+        data = await response.json();
+        console.log(data);
     
 });

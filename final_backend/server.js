@@ -22,10 +22,14 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Routes
 app.use('/api/auth', authRoutes);
-app.use('/api/courses', courseRoutes);  
+app.use('', courseRoutes);  
 
 
 
 const PORT = 5001;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+const expressListEndpoints = require('express-list-endpoints');
+
+console.log(expressListEndpoints(app));
 

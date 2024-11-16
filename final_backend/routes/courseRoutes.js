@@ -1,27 +1,89 @@
 const express = require('express');
 const router = express.Router();
 const Course = require('../models/Course');
+const multer = require('multer');
+const AWS = require('aws-sdk');
 
-router.post('/add-course', async (req, res) => {
+// Configure multer to store files in memory
+const storage = multer.memoryStorage(); 
+const upload = multer({ storage: storage });
+
+// Configure AWS S3
+const s3 = new AWS.S3({
+    accessKeyId: 'AKIASFUIROVIUQ3KAWHW',
+    secretAccessKey: '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',
+    region: 'eu-north-1'
+});
+
+// Function to upload files to S3
+function uploadToS3(file) {
+    return new Promise((resolve, reject) => {
+        const params = {
+            Bucket: 'mytest75',
+            Key: Date.now() + '-' + file.originalname, // Use a unique file name
+            Body: file.buffer, // The file buffer from multer
+            ContentType: file.mimetype
+        };
+
+        s3.upload(params, (err, data) => {
+            if (err) {
+                return reject(err);
+            }
+            resolve(data.Location); // Return the S3 URL
+        });
+    });
+}
+
+router.post('/add-course', upload.fields([
+    { name: 'photo', maxCount: 1 },
+    { name: 'chapterFiles[]' },
+    { name: 'docFiles[]' }
+]), async (req, res) => {
     try {
-        const { title, description, category, instructorId } = req.body;
+        const { title, description, category, chapters = [], documents = [], instructorId } = req.body;
 
-        alert('TEST', req)
+        // Debugging to check what files and body data are received
+        console.log(req.files); // This will show what files are in the request
+        console.log(req.body); // This will show the form fields, including chapters[]
 
+        // Handle photo upload
+        const photoUrl = req.files['photo'] ? await uploadToS3(req.files['photo'][0]) : null;
+
+        // Handle chapter file uploads
+        const chapterUrls = req.files['chapterFiles[]']
+            ? await Promise.all(req.files['chapterFiles[]'].map(file => uploadToS3(file)))
+            : [];
+
+        // Handle document file uploads
+        const documentUrls = req.files['docFiles[]']
+            ? await Promise.all(req.files['docFiles[]'].map(file => uploadToS3(file)))
+            : [];
+
+        // Handle the chapters titles and file URLs mapping
+        const chapterData = chapters && Array.isArray(chapters)
+            ? chapters.map((title, i) => ({
+                title,
+                fileUrl: chapterUrls[i] || null
+            }))
+            : [];
+
+        // Handle the documents titles and file URLs mapping
+        const documentData = Array.isArray(req.body['documents[]'])
+            ? req.body['documents[]'].map((title, i) => ({
+                title,
+                fileUrl: documentUrls[i] || null
+            }))
+            : [];
+
+        // Build the course object
         const course = new Course({
             title,
             description,
             category,
-            instructorId,
-            photoUrl: req.files['photo'] ? `/uploads/${req.files['photo'][0].filename}` : null,
-            chapters: req.files['chapterFiles[]']?.map((file, i) => ({
-                title: req.body['chapters[]'][i],
-                fileUrl: `/uploads/${file.filename}`,
-            })) || [],
-            additionalDocs: req.files['docFiles[]']?.map((file, i) => ({
-                title: req.body['documents[]'][i],
-                fileUrl: `/uploads/${file.filename}`,
-            })) || [],
+            instructorId: instructorId,
+            photoUrl: photoUrl,
+            chapters: chapterData,
+            additionalDocs: documentData,
         });
 
         const savedCourse = await course.save();
