@@ -73,7 +73,18 @@ document.addEventListener('DOMContentLoaded', () => {
 // Fetch Courses from the Backend
 async function fetchCourses(courseList) {
     try {
-        const response = await fetch('http://localhost:5001/courses');
+        // Get the instructor ID from local storage
+        const userData = JSON.parse(localStorage.getItem('user_data'));
+        const instructorId = userData ? userData._id : null;
+
+        if (!instructorId) {
+            alert('Instructor ID is missing. Please log in again.');
+            window.location.href = 'login.html'; // Redirect to login page if ID is missing
+            return;
+        }
+
+        // Fetch courses for the logged-in instructor using the instructorId
+        const response = await fetch(`http://localhost:5001/courses?instructorId=${instructorId}`);
         if (!response.ok) {
             throw new Error('Failed to fetch courses');
         }
@@ -83,6 +94,7 @@ async function fetchCourses(courseList) {
         if (courses.length === 0) {
             courseList.innerHTML = '<li>No courses added yet.</li>';
         } else {
+            courseList.innerHTML = ''; // Clear any previous content
             courses.forEach((course) => {
                 const listItem = document.createElement('li');
                 listItem.textContent = course.title;

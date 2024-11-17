@@ -1,11 +1,113 @@
-function confirmLogout() {
-    const confirmation = confirm("Are you sure you want to logout?");
-    if (confirmation) {
-        window.location.href = "home.html";
+document.addEventListener('DOMContentLoaded', () => {
+    // Handle Logout Confirmation
+    const logoutButton = document.querySelector('.logout-btn');
+    if (logoutButton) {
+        logoutButton.addEventListener('click', () => {
+            const confirmation = confirm("Are you sure you want to logout?");
+            if (confirmation) {
+                window.location.href = "home.html";
+            }
+        });
+    }
+
+    // Handle Photo Upload Preview
+    const fileInput = document.getElementById('course-photo');
+    if (fileInput) {
+        fileInput.addEventListener('change', handlePhotoUpload);
+    }
+
+    const deletePhotoButton = document.getElementById('delete-photo-btn');
+    if (deletePhotoButton) {
+        deletePhotoButton.addEventListener('click', deletePhoto);
+    }
+
+    // Add Chapter Functionality
+    const addChapterButton = document.getElementById('add-chapter-btn');
+    if (addChapterButton) {
+        addChapterButton.addEventListener('click', addChapter);
+    }
+
+    // Add Document Functionality
+    const addDocumentButton = document.getElementById('add-document-btn');
+    if (addDocumentButton) {
+        addDocumentButton.addEventListener('click', addDocument);
+    }
+
+    // Handle Form Submission
+    const form = document.getElementById('add-course-form');
+    if (form) {
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const userData = JSON.parse(localStorage.getItem('user_data'));
+
+            const formData = new FormData(event.target);
+            formData.append('instructorId', userData._id);
+
+            try {
+                const response = await fetch('http://localhost:5001/add-course', {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                if (response.ok) {
+                    alert('Course added successfully!');
+                }
+
+                const data = await response.json();
+                console.log(data);
+            } catch (error) {
+                console.error('Error submitting form:', error);
+                alert('Failed to add course. Please try again later.');
+            }
+        });
+    }
+
+    // Fetch Courses and Display
+    const courseList = document.getElementById('course-list');
+    if (courseList) {
+        fetchCourses(courseList);
+    }
+});
+
+// Fetch Courses from the Backend
+async function fetchCourses(courseList) {
+    try {
+        // Get the instructor ID from local storage
+        const userData = JSON.parse(localStorage.getItem('user_data'));
+        const instructorId = userData ? userData._id : null;
+
+        if (!instructorId) {
+            alert('Instructor ID is missing. Please log in again.');
+            window.location.href = 'login.html'; // Redirect to login page if ID is missing
+            return;
+        }
+
+        // Fetch courses for the logged-in instructor using the instructorId
+        const response = await fetch(`http://localhost:5001/courses?instructorId=${instructorId}`);
+        if (!response.ok) {
+            throw new Error('Failed to fetch courses');
+        }
+
+        const courses = await response.json();
+
+        if (courses.length === 0) {
+            courseList.innerHTML = '<li>No courses added yet.</li>';
+        } else {
+            courseList.innerHTML = ''; // Clear any previous content
+            courses.forEach((course) => {
+                const listItem = document.createElement('li');
+                listItem.textContent = course.title;
+                courseList.appendChild(listItem);
+            });
+        }
+    } catch (error) {
+        console.error('Error fetching courses:', error);
+        courseList.innerHTML = '<li>Failed to load courses. Please try again later.</li>';
     }
 }
 
-// Handle photo upload preview
+// Photo Upload Handler
 function handlePhotoUpload(event) {
     const file = event.target.files[0];
     const preview = document.getElementById('photo-preview');
@@ -24,6 +126,7 @@ function handlePhotoUpload(event) {
     }
 }
 
+// Delete Photo Handler
 function deletePhoto() {
     const fileInput = document.getElementById('course-photo');
     const preview = document.getElementById('photo-preview');
@@ -37,7 +140,7 @@ function deletePhoto() {
     deleteButton.classList.add('hidden');
 }
 
-// Add Chapter
+// Add Chapter Handler
 function addChapter() {
     const chapterList = document.getElementById('chapter-list');
     const chapterId = `chapter-${Date.now()}`;
@@ -52,7 +155,7 @@ function addChapter() {
     chapterList.appendChild(chapterItem);
 }
 
-// Add Document
+// Add Document Handler
 function addDocument() {
     const docList = document.getElementById('additional-doc-list');
     const docId = `doc-${Date.now()}`;
@@ -67,31 +170,10 @@ function addDocument() {
     docList.appendChild(docItem);
 }
 
-// Remove Item
+// Remove Item Handler
 function removeItem(itemId) {
     const item = document.getElementById(itemId);
-    item.remove();
+    if (item) {
+        item.remove();
+    }
 }
-
-// Handle form submission
-document.getElementById('add-course-form').addEventListener('submit', async (event) => {
-    event.preventDefault();
-
-    const userData = JSON.parse(localStorage.getItem('user_data'))
-
-    const formData = new FormData(event.target);
-    formData.append('instructorId', userData._id);
-
-    const response = await fetch('http://localhost:5001/add-course', {
-        method: 'POST',
-        body: formData
-    });
-
-        if (response.ok) {
-            alert('Course added successfully!');
-        }
-
-        data = await response.json();
-        console.log(data);
-    
-});

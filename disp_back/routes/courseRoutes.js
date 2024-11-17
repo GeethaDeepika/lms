@@ -98,8 +98,16 @@ router.post('/add-course', upload.fields([
 
 router.get('/courses', async (req, res) => {
     try {
-        const courses = await Course.find({}, 'title'); // Fetch only course titles
-        res.status(200).json(courses);
+        const instructorId = req.query.instructorId; // Get instructorId from the query parameter
+
+        if (!instructorId) {
+            return res.status(400).json({ error: 'Instructor ID is required' });
+        }
+
+        // Fetch courses for the given instructorId
+        const courses = await Course.find({ instructorId }, 'title'); // Only select the title field
+
+        res.status(200).json(courses); // Send the list of course titles
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Failed to fetch courses' });
