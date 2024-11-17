@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link id = "role-stylesheet"rel="stylesheet" href="">
+    <script defer src="script.js"></script>
+</head>
+<body>
+    <div class="form-container">
+        <h2 id="login-title">Login</h2>
+        <input type="email" id="email" placeholder="Email" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <button onclick="handleLogin()">Login</button>
+        <p>Don't have an account? <a id="signup-link" href="#">Sign Up</a></p>
+    </div>
+
+    <script>
+        // Capture the role from the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const role = urlParams.get('role');
+
+        // Select the appropriate stylesheet based on the role
+        const stylesheet = document.getElementById('role-stylesheet');
+        if (role === 'student') {
+            stylesheet.href = 'student-style.css';
+        } else if (role === 'instructor') {
+            stylesheet.href = 'instructor-style.css';
+        } else {
+            stylesheet.href = 'default-style.css'; // Optional: a default style if no role is specified
+        }
+
+        // Set the signup link based on the role
+        const signupLink = document.getElementById('signup-link');
+        if (role) {
+            signupLink.href = `signup.html?role=${role}`;
+        } else {
+            signupLink.href = 'signup.html'; // Default to a generic signup if no role is specified
+        }
+    </script>
+</body>
+</html>
+
