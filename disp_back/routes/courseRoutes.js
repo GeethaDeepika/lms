@@ -114,6 +114,18 @@ router.get('/courses', async (req, res) => {
     }
 });
 
+// Fetch all available courses for students
+router.get('/allcourses', async (req, res) => {
+    try {
+        const courses = await Course.find({}, 'title photoUrl');
+        res.status(200).json(courses);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to fetch courses' });
+    }
+});
+
+
 
 module.exports = router;
 
