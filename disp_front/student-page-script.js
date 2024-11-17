@@ -31,6 +31,7 @@ async function fetchCourses() {
                 courseCard.innerHTML = `
                     <img src="${course.photoUrl}" alt="Course Image">
                     <h3>${course.title}</h3>
+                    <button class="enroll-btn">Enroll Now</button>
                 `;
                 courseGrid.appendChild(courseCard);
             });
