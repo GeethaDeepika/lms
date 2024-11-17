@@ -24,14 +24,15 @@ function uploadToS3(file) {
             Bucket: 'mytest75',
             Key: Date.now() + '-' + file.originalname, // Use a unique file name
             Body: file.buffer, // The file buffer from multer
-            ContentType: file.mimetype
+            ContentType: file.mimetype,
+            ACL: 'public-read', // Make the file publicly accessible
         };
 
         s3.upload(params, (err, data) => {
             if (err) {
                 return reject(err);
             }
-            resolve(data.Location); // Return the S3 URL
+            resolve(data.Location); // Return the publicly accessible S3 URL
         });
     });
 }
