@@ -27,8 +27,7 @@ async function fetchCourseDetails() {
         // Populate course details
         document.getElementById('course-title').innerText = course.title;
         document.getElementById('course-description').innerHTML = `
-            <p><strong>Category:</strong> ${course.category}</p>
-            <p>${course.description}</p>
+            <p> <strong>Description: </strong> ${course.description}</p>
         `;
 
         // Populate course materials
@@ -38,23 +37,42 @@ async function fetchCourseDetails() {
         if (course.chapters.length === 0 && course.additionalDocs.length === 0) {
             courseMaterials.innerHTML += '<p>No materials available.</p>';
         } else {
+            // Display chapters with required structure and styling
             course.chapters.forEach((chapter) => {
-                courseMaterials.innerHTML += `
-                    <div class="material">
-                        <h4>${chapter.title}</h4>
-                        <a href="${chapter.fileUrl}" target="_blank">Download Chapter</a>
-                    </div>
+                const chapterDiv = document.createElement('div');
+                chapterDiv.classList.add('chapter-material');
+
+                chapterDiv.innerHTML = `
+                    <h4 class="chapter-title">${chapter.title}</h4>
+                    ${chapter.videoUrl ? `
+                        <video controls class="chapter-video">
+                            <source src="${chapter.videoUrl}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    ` : '<p class="no-video">No video available for this chapter.</p>'}
+                    <p class="chapter-description">Chapter summary: ${chapter.description || 'No description provided.'}</p>
+                    ${chapter.fileUrl ? `
+                        <a class="chapter-download" href="${chapter.fileUrl}" target="_blank">Download Chapter Material</a>
+                    ` : '<p class="no-download">No downloadable materials for this chapter.</p>'}
                 `;
+
+                courseMaterials.appendChild(chapterDiv);
             });
 
-            course.additionalDocs.forEach((doc) => {
-                courseMaterials.innerHTML += `
-                    <div class="material">
-                        <h4>${doc.title}</h4>
-                        <a href="${doc.fileUrl}" target="_blank">Download Document</a>
-                    </div>
-                `;
-            });
+            // Display additional documents
+            if (course.additionalDocs.length > 0) {
+                const docSection = document.createElement('div');
+                docSection.innerHTML = '<h3>Additional Documents</h3>';
+                course.additionalDocs.forEach((doc) => {
+                    docSection.innerHTML += `
+                        <div class="additional-doc">
+                            <h4>${doc.title}</h4>
+                            <a href="${doc.fileUrl}" target="_blank">Download Document</a>
+                        </div>
+                    `;
+                });
+                courseMaterials.appendChild(docSection);
+            }
         }
     } catch (error) {
         console.error('Error fetching course details:', error);

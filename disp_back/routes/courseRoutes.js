@@ -41,51 +41,44 @@ function uploadToS3(file) {
 router.post('/add-course', upload.fields([
     { name: 'photo', maxCount: 1 },
     { name: 'chapterFiles[]' },
-    { name: 'docFiles[]' }
+    { name: 'chapterVideos[]' },
+    { name: 'docFiles[]' },
 ]), async (req, res) => {
     try {
-        const { title, description, category, chapters = [], documents = [], instructorId } = req.body;
+        const { title, description, category, chapters = [], chapterDescriptions = [], documents = [], instructorId } = req.body;
 
-        // Debugging to check what files and body data are received
-        console.log(req.files); // This will show what files are in the request
-        console.log(req.body); // This will show the form fields, including chapters[]
+        console.log(req.files); // Debugging uploaded files
+        console.log(req.body);  // Debugging form fields
 
-        // Handle photo upload
         const photoUrl = req.files['photo'] ? await uploadToS3(req.files['photo'][0]) : null;
-
-        // Handle chapter file uploads
-        const chapterUrls = req.files['chapterFiles[]']
+        const chapterFileUrls = req.files['chapterFiles[]']
             ? await Promise.all(req.files['chapterFiles[]'].map(file => uploadToS3(file)))
             : [];
-
-        // Handle document file uploads
+        const chapterVideoUrls = req.files['chapterVideos[]']
+            ? await Promise.all(req.files['chapterVideos[]'].map(file => uploadToS3(file)))
+            : [];
         const documentUrls = req.files['docFiles[]']
             ? await Promise.all(req.files['docFiles[]'].map(file => uploadToS3(file)))
             : [];
 
-        // Handle the chapters titles and file URLs mapping
-        const chapterData = chapters && Array.isArray(chapters)
-            ? chapters.map((title, i) => ({
-                title,
-                fileUrl: chapterUrls[i] || null
-            }))
-            : [];
+        const chapterData = chapters.map((title, i) => ({
+            title,
+            description: chapterDescriptions[i] || null,
+            fileUrl: chapterFileUrls[i] || null,
+            videoUrl: chapterVideoUrls[i] || null,
+        }));
 
-        // Handle the documents titles and file URLs mapping
-        const documentData = Array.isArray(req.body['documents[]'])
-            ? req.body['documents[]'].map((title, i) => ({
-                title,
-                fileUrl: documentUrls[i] || null
-            }))
-            : [];
+        const documentData = documents.map((title, i) => ({
+            title,
+            fileUrl: documentUrls[i] || null,
+        }));
 
-        // Build the course object
         const course = new Course({
             title,
             description,
             category,
-            instructorId: instructorId,
-            photoUrl: photoUrl,
+            instructorId,
+            photoUrl,
             chapters: chapterData,
             additionalDocs: documentData,
         });

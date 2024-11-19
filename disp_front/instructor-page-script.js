@@ -92,18 +92,18 @@ async function fetchCourses(courseList) {
         const courses = await response.json();
 
         if (courses.length === 0) {
-            courseList.innerHTML = '<li>No courses added yet.</li>';
+            courseList.innerHTML = '<tr><td>No courses added yet.</td></tr>';
         } else {
             courseList.innerHTML = ''; // Clear any previous content
             courses.forEach((course) => {
-                const listItem = document.createElement('li');
-                listItem.textContent = course.title;
-                courseList.appendChild(listItem);
+                const row = document.createElement('tr');
+                row.innerHTML = `<td>${course.title}</td>`;
+                courseList.appendChild(row);
             });
         }
     } catch (error) {
         console.error('Error fetching courses:', error);
-        courseList.innerHTML = '<li>Failed to load courses. Please try again later.</li>';
+        courseList.innerHTML = '<tr><td>Failed to load courses. Please try again later.</td></tr>';
     }
 }
 
@@ -148,7 +148,9 @@ function addChapter() {
     chapterItem.className = 'chapter-item';
     chapterItem.innerHTML = `
         <input type="text" name="chapters[]" placeholder="Chapter Title" required>
-        <input type="file" name="chapterFiles[]" accept=".pdf,.doc,.docx" required>
+        <textarea name="chapterDescriptions[]" rows="4" placeholder="Chapter Description" required></textarea>
+        <input type="file" name="chapterFiles[]" accept=".pdf,.doc,.docx,.pptx">
+        <input type="file" name="chapterVideos[]" accept="video/*">
         <button type="button" onclick="removeItem('${chapterId}')">Remove</button>
     `;
     chapterItem.id = chapterId;

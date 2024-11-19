@@ -27,11 +27,25 @@
         </nav>
     </div>
 
+    <div class="filter-bar">
+        <input type="text" id="courseFilter" placeholder="Filter courses..." onkeyup="filterCourses()">
+    </div>
+    
+
     <div class="main-content">
-        <h2>Welcome!!</h2>
         <button class="add-course-btn" onclick="window.location.href='add-new-course.html'">Add New Course</button>
-        <h3>Your Courses:</h3>
-        <ul id="course-list"></ul> <!-- Course titles will be appended here -->
+        <h3>My Courses</h3>
+        <div class="course-table-container">
+            <table class="course-table">
+                <thead>
+                    <tr>
+                        <th>Course Title</th>
+                    </tr>
+                </thead>
+                <tbody id="course-list"></tbody> <!-- Course titles will be appended here -->
+            </table>
+        </div>
+
     </div>
     
 
