@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Course = require('../models/Course');
+const Enrollment = require('../models/enrollment');
 const multer = require('multer');
 const AWS = require('aws-sdk');
 
@@ -125,6 +126,41 @@ router.get('/allcourses', async (req, res) => {
         res.status(500).json({ error: 'Failed to fetch courses' });
     }
 });
+
+
+// POST: Enroll a student in a course
+router.post('/enroll', async (req, res) => {
+    try {
+        const { studentId, courseId } = req.body;
+
+        // Check if enrollment already exists
+        const existingEnrollment = await Enrollment.findOne({ studentId, courseId });
+        if (existingEnrollment) {
+            return res.status(400).json({ message: 'Already enrolled in this course' });
+        }
+
+        // Create new enrollment
+        const enrollment = new Enrollment({ studentId, courseId });
+        await enrollment.save();
+
+        res.status(201).json({ message: 'Enrollment successful' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to enroll in course' });
+    }
+});
+
+router.get('/my-courses/:studentId', async (req, res) => {
+    try {
+        const { studentId } = req.params;
+        const enrollments = await Enrollment.find({ studentId }).populate('courseId', 'title photoUrl');
+        res.status(200).json(enrollments);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to fetch enrolled courses' });
+    }
+});
+
 
 
 
