@@ -161,6 +161,26 @@ router.get('/my-courses/:studentId', async (req, res) => {
     }
 });
 
+// Get course details by course ID
+router.get('/course/:courseId', async (req, res) => {
+    try {
+        const { courseId } = req.params;
+
+        // Find the course by ID
+        const course = await Course.findById(courseId);
+
+        if (!course) {
+            return res.status(404).json({ error: 'Course not found' });
+        }
+
+        res.status(200).json(course);
+    } catch (error) {
+        console.error('Error fetching course details:', error);
+        res.status(500).json({ error: 'Failed to fetch course details' });
+    }
+});
+
+
 
 
 

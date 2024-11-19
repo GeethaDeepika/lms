@@ -43,6 +43,11 @@ async function fetchEnrolledCourses() {
                     <img src="${courseId.photoUrl || './assets/default-course.jpg'}" alt="Course Image">
                     <h3>${courseId.title || 'Untitled Course'}</h3>
                 `;
+                // Add click event to redirect to course details page
+                courseCard.addEventListener('click', () => {
+                    window.location.href = `course-details.html?courseId=${courseId._id}`;
+                });
+                
                 courseGrid.appendChild(courseCard);
             });
         }
