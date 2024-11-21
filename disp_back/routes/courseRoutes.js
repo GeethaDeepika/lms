@@ -91,6 +91,7 @@ router.post('/add-course', upload.fields([
     }
 });
 
+// instructor courses
 router.get('/courses', async (req, res) => {
     try {
         const instructorId = req.query.instructorId; // Get instructorId from the query parameter
